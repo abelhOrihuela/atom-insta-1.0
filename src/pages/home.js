@@ -14,8 +14,6 @@ class Home extends Component {
 
   componentDidMount = () => {
     let postsRef = firebase.database().ref('posts')
-
-    //.orderByChild("authorId").equalTo("vjdsnd")
     
 
     postsRef.on('value', (snapshot) => {
@@ -47,8 +45,9 @@ class Home extends Component {
 
     return (
       <div>
-        Welcome
-        <Post />
+        <div className="header-home">
+          <Post />
+        </div>
         <div className="columns">
 
           <div

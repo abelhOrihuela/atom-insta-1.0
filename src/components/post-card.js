@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import firebase from 'firebase'
 import { Link } from 'react-router-dom'
-import { read } from 'fs'
+import tree from '../tree'
 
 class PostCard extends Component {
   constructor(props) {
@@ -9,7 +9,10 @@ class PostCard extends Component {
     this.state = {
       author: null,
       loading: true,
-      comment: ''
+      user: tree.get("user"),
+      comment: '',
+      disabled: false,
+      commentWasSent: false
     }
   }
 
@@ -37,7 +40,8 @@ class PostCard extends Component {
       target
     } = e
     this.setState({
-      comment: target.value
+      comment: target.value, 
+      commentWasSent: false
     })
   }
 
@@ -45,7 +49,8 @@ class PostCard extends Component {
     e.preventDefault()
 
     const {
-      comment
+      comment,
+      user
     } = this.state
 
     const {
@@ -53,19 +58,29 @@ class PostCard extends Component {
     } = this.props
 
     if (comment) {
+      this.setState({
+        disabled: true
+      })
+
       let comments = firebase.database().ref(`postsComments/${post.id}`)
 
       let refComment = comments.push()
 
       refComment.set({
         content: comment,
-        userId: '3qODBBirJeXb0FZaM6auSPSWJgo2',
+        userId: user.id,
         createdAt: new Date().toJSON()
       })
 
-      this.setState({
-        comment: ''
-      })
+      setTimeout(() => {
+        this.setState({
+          comment: '',
+          disabled: false,
+          commentWasSent: true
+        })
+      }, 500)
+
+     
     }
   }
 
@@ -78,7 +93,9 @@ class PostCard extends Component {
     let {
       loading,
       author,
-      comment
+      comment,
+      disabled,
+      commentWasSent
     } = this.state
 
     if (loading) {
@@ -104,7 +121,6 @@ class PostCard extends Component {
 
             <div className="media-content">
               <p className="title is-4">{author.displayName}</p>
-              <p className="subtitle is-6">@johnsmith</p>
             </div>
 
           </div>
@@ -124,7 +140,13 @@ class PostCard extends Component {
           <img src={post.photoURL} />
         </figure>
       </div>
-
+      {
+        commentWasSent && (<div className="card-content">
+          <div className="notification is-success">
+            Comentario enviado
+            </div>
+        </div>)
+      }
       {
         !readOnly && (<div className="card-footer">
           <form
@@ -135,18 +157,22 @@ class PostCard extends Component {
               <p className="control is-expanded">
                 <input
                   value={comment}
+                  disabled={disabled}
                   className="input"
                   onChange={this.handleChange}
                   placeholder="Escribe un comentario"
                 />  </p>
               <p className="control">
                 <button
+                  disabled={disabled}
                   className="button is-info">
                   Enviar
                 </button>
               </p>
+              
             </div>
-
+            
+            
           </form>
         </div>)
       }

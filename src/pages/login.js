@@ -11,6 +11,11 @@ class Login extends Component {
   }
 
   componentDidMount = async () => {
+    let user = JSON.parse(window.localStorage.getItem("user"))
+    let {
+      history
+    } = this.props
+
     try {
       let data = await firebase.auth().getRedirectResult()
 
@@ -19,6 +24,7 @@ class Login extends Component {
         let user = firebase.database().ref(`users/${data.user.uid}`)
 
         let userFormat = {
+          id: data.user.uid,
           displayName: data.user.displayName,
           photoURL: data.user.photoURL,
         }
@@ -28,14 +34,10 @@ class Login extends Component {
 
         store.set("user", userFormat)
         store.commit()
-
-      
-
-        let {
-          history
-        } = this.props
         history.push('/home')
 
+      } else if (user) {
+        history.push('/home')
       } else {
         this.setState({
           loading: false

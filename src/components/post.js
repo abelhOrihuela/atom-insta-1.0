@@ -4,18 +4,20 @@ import firebase from 'firebase'
 import { toast } from 'react-toastify'
 import uuid from 'uuid/v1'
 import LoadingBar from 'react-top-loading-bar'
+import tree from '../tree'
 
 class Post extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      classNameModal: '',
+      classNameModal: "",
       errorForm: false,
       progressUpload: 0,
+      user: tree.get("user"),
       loading: false,
       formData: {
-        content: '',
-        image: ''
+        content: "",
+        image: ""
       }
     }
   }
@@ -148,7 +150,7 @@ class Post extends Component {
         onClick={
           () => this.handleModal('is-active')
         }
-        className="button is-success">
+        className="button is-success is-fullwidth">
         Nuevo post
       </button>
 

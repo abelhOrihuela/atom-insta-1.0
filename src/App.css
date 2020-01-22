@@ -19,3 +19,9 @@
 .fields-comments {
   width: 100% !important;
 }
+
+.header-home {
+  position: fixed;
+  top: 5rem;
+  z-index: 999999;
+}
