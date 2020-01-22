@@ -23,5 +23,5 @@
 .header-home {
   position: fixed;
   top: 5rem;
-  z-index: 999999;
+  z-index: 7;
 }

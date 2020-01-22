@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
+import firebase from 'firebase'
+import tree  from '../tree'
 
 class Navbar extends Component {
   state = {
@@ -12,6 +14,24 @@ class Navbar extends Component {
         collapsed: !prevState.collapsed
       }
     })
+  }
+
+  handleCloseSession = () => {
+    firebase.auth().signOut().then(() => {
+      // Sign-out successful.
+      let {
+        history
+      } = this.props
+
+
+      window.localStorage.clear()
+      tree.set("user", null)
+      tree.commit()
+      this.handleMenu()
+      history.push('/')
+    }).catch(function (error) {
+      // An error happened.
+    });
   }
 
   render() {
@@ -62,14 +82,16 @@ class Navbar extends Component {
         </div>
 
         <div className="navbar-end">
-          <div className="navbar-item">
-            <div className="buttons">
-            </div>
-          </div>
+          <a
+            className="navbar-item"
+            onClick={this.handleCloseSession}
+          >
+            Salir
+            </a>
         </div>
       </div>
     </nav>)
   }
 }
 
-export default Navbar
+export default withRouter(Navbar)
