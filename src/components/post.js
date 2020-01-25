@@ -105,7 +105,8 @@ class Post extends Component {
 
   handleCreatePost = (url) => {
     let {
-      formData: { content }
+      formData: { content },
+      user
     } = this.state
 
     let posts = firebase.database().ref('posts')
@@ -114,7 +115,7 @@ class Post extends Component {
     newPost.set({
       content,
       photoURL: url,
-      authorId: '3qODBBirJeXb0FZaM6auSPSWJgo2',
+      authorId: user.id,
       createdAt: new Date().toJSON()
     })
     this.setState({
