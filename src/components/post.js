@@ -117,6 +117,7 @@ class Post extends Component {
       authorId: user.id,
       createdAt: new Date().toJSON()
     })
+
     this.setState({
       classNameModal: '',
       loading: false,

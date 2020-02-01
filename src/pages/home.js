@@ -14,12 +14,11 @@ class Home extends Component {
 
   componentDidMount = () => {
     validateUser()
-    let postsRef = firebase.database().ref('posts')
-
-    //.orderByChild("authorId").equalTo("vjdsnd")
+    let postsRef = firebase.database().ref('posts').orderByChild("createdAt")
+    // .equalTo("vjdsnd")
     
 
-    postsRef.on('value', (snapshot) => {
+    postsRef.once('value', (snapshot) => {
 
       let posts = snapshot.val()
       let newPosts = []
@@ -35,7 +34,7 @@ class Home extends Component {
       }
 
       this.setState({
-        posts: newPosts.reverse()
+        posts: newPosts
       })
 
     })
