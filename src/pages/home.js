@@ -3,7 +3,7 @@ import firebase from 'firebase'
 // import Card from '../components/card'
 import Post from '../components/post'
 import PostCard from '../components/post-card'
-
+import { validateUser } from '../middleware'
 class Home extends Component {
   constructor(props) {
     super(props)
@@ -13,6 +13,7 @@ class Home extends Component {
   }
 
   componentDidMount = () => {
+    validateUser()
     let postsRef = firebase.database().ref('posts')
 
     //.orderByChild("authorId").equalTo("vjdsnd")

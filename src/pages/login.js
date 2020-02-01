@@ -3,8 +3,6 @@ import firebase from 'firebase'
 import store from '../tree'
 import { toast } from 'react-toastify'
 
-import { withRouter } from 'react-router-dom'
-
 class Login extends Component {
   constructor(props) {
     super(props)
@@ -33,9 +31,9 @@ class Login extends Component {
 
         store.set("user", userFormat)
         store.commit()
-
-        this.props.userStateChanged(userFormat)
-    
+        
+        this.props.history.push('/home')
+        
       } else {
         this.setState({
           loading: false
@@ -113,4 +111,4 @@ class Login extends Component {
   }
 }
 
-export default withRouter(Login);
+export default Login
