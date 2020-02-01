@@ -3,6 +3,8 @@ import firebase from 'firebase'
 import store from '../tree'
 import { toast } from 'react-toastify'
 
+import { withRouter } from 'react-router-dom'
+
 class Login extends Component {
   constructor(props) {
     super(props)
@@ -12,6 +14,7 @@ class Login extends Component {
   }
 
   componentDidMount = async () => {
+
     try {
       let data = await firebase.auth().getRedirectResult()
 
@@ -31,11 +34,8 @@ class Login extends Component {
         store.set("user", userFormat)
         store.commit()
 
-        let {
-          history
-        } = this.props
-        history.push('/home')
-
+        this.props.userStateChanged(userFormat)
+    
       } else {
         this.setState({
           loading: false
@@ -97,7 +97,7 @@ class Login extends Component {
       )
     }
 
-    return (<div className="columns">
+    return (<div className="columns columns-main-login">
       <div className="column is-two-thirds">
         <img src="/assets/preview.jpg" />
       </div>
@@ -113,4 +113,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);
